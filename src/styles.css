@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+@import "assets/layout/styles/layout/layout.scss";
+
+/* PrimeNG */
+
+@import "primeng/resources/primeng.css";
+
+@import "primeflex/primeflex.scss";
+
+@import "primeicons/primeicons.css";
+
