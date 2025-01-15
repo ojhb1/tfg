@@ -1,9 +1,17 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
-
+import { CommonModule } from '@angular/common';
+import { RouterLink, RouterModule } from '@angular/router';
+import { AppMenuitemComponent } from './app.menuitem.component';
 @Component({
+    standalone:true,
     selector: 'app-menu',
+    imports:[
+        CommonModule,
+        RouterModule,
+        AppMenuitemComponent
+    ],
     templateUrl: './app.menu.component.html'
 })
 export class AppMenuComponent implements OnInit {
@@ -15,16 +23,22 @@ export class AppMenuComponent implements OnInit {
     ngOnInit() {
         this.model = [
             {
-                label: 'Home',
+                label: 'Inicio',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }
+                    { label: 'Pantalla Inicial', icon: 'pi pi-fw pi-home', routerLink: ['/'] }
                 ]
             },
             {
-                label: 'UI Components',
+                label: 'Colección',
                 items: [
-                    { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
-                    { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
+                    { label: 'Animales', icon: 'pi pi-fw pi-id-card',
+                        items: [
+                            {
+                                label: 'Mamíferos', icon: 'pi pi-fw pi-bookmark',routerLink: ['/mamiferos']
+                            },
+                        ]
+                    },
+                   /* { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
                     { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel'] },
                     { label: 'Invalid State', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/uikit/invalidstate'] },
                     { label: 'Button', icon: 'pi pi-fw pi-box', routerLink: ['/uikit/button'] },
@@ -38,9 +52,10 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Message', icon: 'pi pi-fw pi-comment', routerLink: ['/uikit/message'] },
                     { label: 'File', icon: 'pi pi-fw pi-file', routerLink: ['/uikit/file'] },
                     { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
-                    { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }
+                    { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }*/
                 ]
             },
+            /*
             {
                 label: 'Prime Blocks',
                 items: [
@@ -160,6 +175,7 @@ export class AppMenuComponent implements OnInit {
                     }
                 ]
             }
+                */
         ];
     }
 }

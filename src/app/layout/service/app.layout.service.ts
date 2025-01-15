@@ -1,5 +1,7 @@
-import { Injectable, effect, signal } from '@angular/core';
+import { Injectable, effect, signal, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Subject } from 'rxjs';
+import { DOCUMENT } from '@angular/common';
 
 export interface AppConfig {
     inputStyle: string;
@@ -44,14 +46,12 @@ export class LayoutService {
     };
 
     private configUpdate = new Subject<AppConfig>();
-
     private overlayOpen = new Subject<any>();
 
     configUpdate$ = this.configUpdate.asObservable();
-
     overlayOpen$ = this.overlayOpen.asObservable();
 
-    constructor() {
+    constructor(@Inject(PLATFORM_ID) private platformId: any, @Inject(DOCUMENT) private document: Document) {
         effect(() => {
             const config = this.config();
             if (this.updateStyle(config)) {
@@ -106,7 +106,7 @@ export class LayoutService {
     }
 
     isDesktop() {
-        return window.innerWidth > 991;
+        return isPlatformBrowser(this.platformId) && window.innerWidth > 991;
     }
 
     isMobile() {
@@ -119,41 +119,63 @@ export class LayoutService {
     }
 
     changeTheme() {
-        const config = this.config();
-        const themeLink = <HTMLLinkElement>document.getElementById('theme-css');
-        const themeLinkHref = themeLink.getAttribute('href')!;
-        const newHref = themeLinkHref
-            .split('/')
-            .map((el) =>
-                el == this._config.theme
-                    ? (el = config.theme)
-                    : el == `theme-${this._config.colorScheme}`
-                    ? (el = `theme-${config.colorScheme}`)
-                    : el
-            )
-            .join('/');
+        // Solo ejecutamos este código en el navegador
+        if (isPlatformBrowser(this.platformId)) {
+            setTimeout(() => {
+                const config = this.config();
+                const themeLink = this.document.getElementById('theme-css') as HTMLLinkElement;
+                if (themeLink) {
+                    const themeLinkHref = themeLink.getAttribute('href');
+                    if (themeLinkHref) {
+                        const newHref = themeLinkHref
+                            .split('/')
+                            .map((el) =>
+                                el === this._config.theme
+                                    ? (el = config.theme)
+                                    : el === `theme-${this._config.colorScheme}`
+                                    ? (el = `theme-${config.colorScheme}`)
+                                    : el
+                            )
+                            .join('/');
 
-        this.replaceThemeLink(newHref);
+                        this.replaceThemeLink(newHref);
+                    }
+                }
+            });
+        }
     }
+
     replaceThemeLink(href: string) {
-        const id = 'theme-css';
-        let themeLink = <HTMLLinkElement>document.getElementById(id);
-        const cloneLinkElement = <HTMLLinkElement>themeLink.cloneNode(true);
+        if (isPlatformBrowser(this.platformId)) {
+            setTimeout(() => {
+                const id = 'theme-css';
+                let themeLink = this.document.getElementById(id) as HTMLLinkElement;
+                if (themeLink) {
+                    const cloneLinkElement = this.document.createElement('link');
+                    cloneLinkElement.setAttribute('rel', 'stylesheet');
+                    cloneLinkElement.setAttribute('href', href);
+                    cloneLinkElement.setAttribute('id', id + '-clone');
 
-        cloneLinkElement.setAttribute('href', href);
-        cloneLinkElement.setAttribute('id', id + '-clone');
+                    themeLink.parentNode!.insertBefore(
+                        cloneLinkElement,
+                        themeLink.nextSibling
+                    );
 
-        themeLink.parentNode!.insertBefore(
-            cloneLinkElement,
-            themeLink.nextSibling
-        );
-        cloneLinkElement.addEventListener('load', () => {
-            themeLink.remove();
-            cloneLinkElement.setAttribute('id', id);
-        });
+                    cloneLinkElement.addEventListener('load', () => {
+                        themeLink.remove();
+                        cloneLinkElement.setAttribute('id', id);
+                    });
+                }
+            });
+        }
     }
 
     changeScale(value: number) {
-        document.documentElement.style.fontSize = `${value}px`;
+        // Solo ejecutamos este código en el navegador
+        if (isPlatformBrowser(this.platformId)) {
+            setTimeout(() => {
+                this.document.documentElement.style.fontSize = `${value}px`;
+            });
+        }
     }
 }
