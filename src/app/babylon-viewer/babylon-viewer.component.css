@@ -1,0 +1,28 @@
+
+/* Contenedor principal para posicionar elementos */
+.babylon-container {
+    position: relative;
+    width: 100%;
+    height: 500px; /* Ajusta según tu necesidad */
+  }
+  
+  /* Estilos para el canvas de Babylon */
+  canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  
+  /* Posicionar botones por encima del canvas */
+  .overlay-buttons {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  
+
+  
+ 
+  

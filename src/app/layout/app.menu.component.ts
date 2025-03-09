@@ -34,7 +34,24 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Animales', icon: 'pi pi-fw pi-id-card',
                         items: [
                             {
-                                label: 'Mamíferos', icon: 'pi pi-fw pi-bookmark',routerLink: ['/mamiferos']
+                                label: 'Mamíferos', 
+                                icon: 'pi pi-fw pi-bookmark',
+                                routerLink: ['/mamiferos']
+                            },
+                            {
+                                label: 'Aves', icon: 'pi pi-fw pi-bookmark',routerLink: ['/aves']
+                            },
+                            {
+                                label: 'Peces', icon: 'pi pi-fw pi-bookmark',routerLink: ['/peces']
+                            },
+                            {
+                                label: 'Anfibios', icon: 'pi pi-fw pi-bookmark',routerLink: ['/anfibios']
+                            },
+                            {
+                                label: 'Reptiles', icon: 'pi pi-fw pi-bookmark',routerLink: ['/reptiles']
+                            },
+                            {
+                                label: 'Insectos', icon: 'pi pi-fw pi-bookmark',routerLink: ['/insectos']
                             },
                         ]
                     },

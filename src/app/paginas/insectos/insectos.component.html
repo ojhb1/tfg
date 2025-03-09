@@ -1,0 +1,36 @@
+<div class="grid">
+  <div class="col-12" >
+    <div class="card" >
+      <p-dataView #dv [value]="animales"   [loading]="loading" loadingIcon="pi pi-spinner" [paginator]="true" [rows]="9" layout="grid"  [emptyMessage]="busquedaRealizada ? 'No se han encontrado resultados' : ''">
+        <!-- Encabezado del DataView -->
+        <ng-template pTemplate="header">
+          <div class="flex flex-column md:flex-row md:justify-content-between gap-2">
+            <p-dropdown [options]="filtros" placeholder="Filtrar" (onChange)="Filtrar(dv,$event)"></p-dropdown>
+            <!-- Filtro por nombre -->
+            <span class="p-input-icon-left" style="width: 100%;">
+              <i class="pi pi-search"></i>
+              <input style="width: 100%;" type="search" pInputText placeholder="Buscar por nombre" [(ngModel)]="busqueda" (input)="onFilter(dv, $event)">
+            </span>
+          </div>
+        </ng-template>
+
+        <!-- Vista de Cuadrícula -->
+        <ng-template let-animal pTemplate="gridItem">
+          <div class="grid grid-nogutter">
+          <div class="col-12 md:col-4 tarjeta"  *ngFor="let animal of animalesfiltrados">
+            <div class="card m-3 border-2 surface-border fondo" (click)="navegarAnimalSeleccionado(animal)">
+              <div class="flex flex-column align-items-center text-center mb-3">
+                <img [src]="animal.imagen"   class="w-9 shadow-2 my-3 mx-0 img1"/>
+                <div class="text-2xl font-bold">{{animal.nombre}}</div>
+                <div class="mb-3"></div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </ng-template>
+
+      </p-dataView>
+    </div>
+  </div>
+</div>
+

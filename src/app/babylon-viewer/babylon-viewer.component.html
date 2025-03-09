@@ -1,0 +1,14 @@
+<!-- babylon-viewer.component.html -->
+<div class="babylon-container">
+    <!-- Canvas donde se renderiza Babylon -->
+    <canvas #canvas></canvas>
+  
+    <!-- Contenedor de botones superpuestos -->
+    <div class="overlay-buttons">
+      <button  pButton pRipple type="button" style="height: 5px;" label="Sin Animación" class="p-button-outlined p-button-success" (click)="sinAnimar()"></button>
+      <button  pButton pRipple type="button" style="height: 5px;" label="Inmovil" class="p-button-outlined p-button-success"(click)="inmovil()"></button>
+      <button  pButton pRipple type="button" style="height: 5px;" label="Personalizada" class="p-button-outlined p-button-success"(click)="personalizada()"></button>
+    </div>
+</div>
+  
+

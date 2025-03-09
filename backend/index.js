@@ -19,3 +19,5 @@ app.listen(process.env.PORT, () => {
 });
 
 app.use('/api/tiposAnimales', require('./router/tiposAnimales'));
+app.use('/api/animales', require('./router/animales'));
+app.use('/api/animalEtiquetas', require('./router/etiquetas'));

@@ -5,7 +5,7 @@ const router = Router();
 
 
 router.get('/:id',[
-    check('id', 'El identificador no es válido').isNumeric(),
+  
 ],obtenerTipoAnimal);
 
 

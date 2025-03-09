@@ -20,7 +20,7 @@ const Especies = sequelize.define('Especies', {
         model: 'TipoAnimales', 
         key: 'id' 
     }
-    }
+  }
 
 }, {
   tableName: 'Especies',  // Nombre de la tabla en la base de datos
