@@ -21,6 +21,7 @@
     "@angular/platform-server": "^18.2.13",
     "@angular/router": "^18.2.13",
     "@angular/ssr": "^18.2.12",
+    "@babylonjs/loaders": "^7.53.3",
     "@primeng/themes": "^18.0.0",
     "babylonjs": "^7.48.1",
     "babylonjs-loaders": "^7.48.1",

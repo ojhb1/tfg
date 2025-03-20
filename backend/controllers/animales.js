@@ -3,6 +3,7 @@ const { Sequelize } = require('sequelize');
 const TipoAnimales = require('../models/tipoAnimal');
 const Animales = require('../models/animal');
 const Especies = require('../models/especie');
+const Habitat = require('../models/habitat');
 const crearAnimal= async(req, res = response) => {
     const animal = req.body;
  
@@ -29,4 +30,36 @@ const crearAnimal= async(req, res = response) => {
 
 }
 
-module.exports = {crearAnimal}
+const obtenerHabitats = async (req, res = response) => {
+    const id = req.params.idAnimal; // ID del animal obtenido de los parámetros
+
+    try {
+        // Buscar el animal e incluir los habitats relacionados
+        const animal = await Animales.findByPk(id, {
+            include: {
+                model: Habitat,
+                through: { attributes: [] } 
+            }
+        });
+
+        if (!animal) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Animal no encontrado'
+            });
+        }
+
+        res.json({
+            ok: true,
+            habitats: animal.Habitats 
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error al obtener los hábitats, contacte con el administrador'
+        });
+    }
+};
+module.exports = {crearAnimal,obtenerHabitats}

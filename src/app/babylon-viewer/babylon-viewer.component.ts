@@ -105,7 +105,7 @@ export class BabylonViewerComponent implements AfterViewInit, OnDestroy {
   private async loadModel(modelo:any): Promise<void> {
     try {
 
-      
+      console.log(this.rutaCompletaModelo);
       const result = await BABYLON.SceneLoader.ImportMeshAsync("", this.rutaCompletaModelo, modelo+".glb", this.scene);
       this.mayaActual = result.meshes[0];
 

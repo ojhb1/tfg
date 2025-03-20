@@ -5,7 +5,7 @@ const tipoAnimal = require('../models/tipoAnimal');
 const Especies = require('../models/especie');
 const Etiqueta = require('../models/etiquetas');
 const informacionEx = require('../models/informacionEx');
-
+const Habitat = require('../models/habitat');
 const initDatabase = async () => {
   try {
     // Autenticar la conexión
@@ -25,6 +25,7 @@ const initDatabase = async () => {
     await Animal.sync();
     await Etiqueta.sync();
     await informacionEx.sync();
+    await Habitat.sync();
     // Cerrar la conexión al finalizar
    
   } catch (error) {

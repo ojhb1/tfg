@@ -66,6 +66,10 @@ const Animales = sequelize.define('Animales', {
     type: DataTypes.TEXT,
     allowNull: true,
   },
+  sonidosAnimal:{
+    type: DataTypes.JSON,
+    allowNull: true,
+  },
   paisesAnimal:{
     type: DataTypes.JSON,
     allowNull: true,
