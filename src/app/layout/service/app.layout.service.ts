@@ -68,7 +68,7 @@ export class LayoutService {
             config.colorScheme !== this._config.colorScheme
         );
     }
-    /*
+    
     onMenuToggle() {
         if (this.isOverlay()) {
             this.state.overlayMenuActive = !this.state.overlayMenuActive;
@@ -89,7 +89,7 @@ export class LayoutService {
             }
         }
     }
-    */
+    
     showProfileSidebar() {
         this.state.profileSidebarVisible = !this.state.profileSidebarVisible;
         if (this.state.profileSidebarVisible) {

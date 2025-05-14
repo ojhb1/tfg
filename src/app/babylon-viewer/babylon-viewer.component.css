@@ -3,7 +3,7 @@
 .babylon-container {
     position: relative;
     width: 100%;
-    height: 500px; /* Ajusta según tu necesidad */
+    height: 570px; /* Ajusta según tu necesidad */
   }
   
   /* Estilos para el canvas de Babylon */
@@ -11,6 +11,9 @@
     width: 100%;
     height: 100%;
     display: block;
+  }
+  canvas:hover{
+    cursor: pointer;
   }
   
   /* Posicionar botones por encima del canvas */
@@ -21,8 +24,216 @@
     display: flex;
     gap: 10px;
   }
-  
 
+  .iconoAnimacion {
+    width: 50px;
+    height: auto;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+  }
   
+  .seleccionada {
+    box-shadow: inset 0 0 2px 1px #ffffff;
  
+    border-radius: 8px;
+  }
+  ::ng-deep .p-carousel-item {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
   
+  ::ng-deep app-mini-preview {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+  }
+  
+  ::ng-deep .p-carousel-item {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  ::ng-deep .p-carousel-item > * {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  ::ng-deep .p-carousel-items-content {
+    background: rgba(255, 0, 0, 0.2); /* rojo semitransparente para ver el espacio */
+  }
+ 
+  /* Elimina márgenes/paddings del carrusel */
+::ng-deep .p-carousel-content {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Hace que cada ítem del carrusel ocupe 100% */
+::ng-deep .p-carousel-item {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+/* Hace que lo que esté dentro del item se expanda */
+::ng-deep .p-carousel-item > * {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Elimina fondo oscuro que se ve detrás */
+::ng-deep .p-carousel-items-content {
+  background: transparent !important;
+}
+.cuadroInfo{
+  width: 400px; 
+  padding: 5px;
+  padding-left: 10px;
+  height: 200px; 
+  color: white;
+
+  z-index: 10; 
+  font-weight: bold;
+  position: absolute;
+  bottom: 40px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+.cuadroInfo {
+  opacity: 1;
+  transform: translateY(0);  
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.cuadroInfo.oculto {
+  opacity: 0;
+  transform: translateY(50px); 
+  pointer-events: none; 
+}
+.rueda-ajustes {
+  cursor: pointer;position: absolute;
+  right: 10px;
+  font-size: 2rem;
+  transition: transform 0.3s ease;
+}
+
+.rueda-ajustes:hover {
+  animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.tarjeta-opcion {
+  background-color: transparent;
+  border: 2px solid #60a5fa; /* azul suave */
+  color: #60a5fa; /* mismo azul */
+  padding: 0.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+.tarjeta-opcion:hover {
+  background-color: rgba(96, 165, 250, 0.1); /* azul translúcido */
+  transform: scale(1.1);
+}
+.babylon-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: opacity 0.1s;
+  white-space: nowrap;
+
+  opacity: 0;
+  z-index: 1000;
+}
+.slide-container {
+  position: relative;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  overflow-x: hidden;
+  justify-content: center;
+}
+
+.slide {
+  text-align: center;
+  padding: 1rem;
+  max-width: 80%;
+}
+
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: #111827;
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  width: 3.5rem;
+  height: 3.5rem;
+  padding: 0.5rem; /* más espacio interno */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.nav-button:hover {
+  background: #3b3f46;
+}
+
+.nav-button.left {
+  left: 0rem;
+}
+
+.nav-button.right {
+  right: 0rem;
+}
+.custom-close-button {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 1.2rem;
+  z-index: 100;
+}
+
+.custom-close-button:hover {
+  color: #60a5fa; /* rojo claro al pasar el mouse */
+}
+:host ::ng-deep .p-dialog-content {
+  overflow-y: hidden !important;
+}

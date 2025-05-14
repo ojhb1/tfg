@@ -42,12 +42,12 @@ const Animales = sequelize.define('Animales', {
     type: DataTypes.TEXT,
     allowNull:true
   },
-  alimentación:{
-    type: DataTypes.TEXT,
+  alimentacion:{
+    type: DataTypes.JSON,
     allowNull: true,
   },
   historia:{
-    type: DataTypes.TEXT,
+    type: DataTypes.JSON,
     allowNull: true,
   },
   poblacion:{
@@ -66,12 +66,16 @@ const Animales = sequelize.define('Animales', {
     type: DataTypes.TEXT,
     allowNull: true,
   },
-  sonidosAnimal:{
-    type: DataTypes.JSON,
+  sonidosAnimal: {
+    type: DataTypes.JSON, 
     allowNull: true,
   },
   paisesAnimal:{
     type: DataTypes.JSON,
+    allowNull: true,
+  },
+  tamanyoAnimal:{
+    type: DataTypes.INTEGER,
     allowNull: true,
   },
   especieID: {

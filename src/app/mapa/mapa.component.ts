@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit, OnDestroy, ChangeDetectorRef, ElementRef, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, Input, AfterViewInit, AfterViewChecked, OnDestroy, ChangeDetectorRef, ElementRef, PLATFORM_ID, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
 
@@ -8,13 +8,13 @@ import { isPlatformBrowser } from '@angular/common';
   templateUrl: './mapa.component.html',
   styleUrls: ['./mapa.component.css'],
 })
-export class MapaComponent implements AfterViewInit, OnDestroy {
+export class MapaComponent implements AfterViewInit, AfterViewChecked, OnDestroy {
   private map!: L.Map;
   private geoJsonLayer: L.GeoJSON | undefined;
-  private initialized: boolean = false; // Controla si el mapa ya ha sido inicializado
+  private initialized: boolean = false;
 
   @Input() animalCountries: string[] = [];
-
+  
   constructor(
     private http: HttpClient, 
     private cdRef: ChangeDetectorRef,
@@ -23,34 +23,46 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit(): void {
-    // Asegurarse de que solo se ejecute en el cliente (navegador)
+    // Se ejecuta inicialmente
     if (isPlatformBrowser(this.platformId) && !this.initialized) {
-      this.initialized = true; // Marcamos que el mapa ya ha sido inicializado
+      this.initialized = true;
       this.initMap();
     }
   }
 
+  ngAfterViewChecked(): void {
+    // Recalcular el tamaño del mapa después de que se haya actualizado el DOM
+    if (this.map) {
+      this.map.invalidateSize(); // Fuerza el redimensionamiento del mapa
+    }
+  }
+  public forceResize() {
+    if (this.map) {
+      this.map.invalidateSize();
+    }
+  }
   private initMap(): void {
-    // Solo inicializamos Leaflet si estamos en el navegador
     if (isPlatformBrowser(this.platformId)) {
       import('leaflet')?.then(L => {
-
         if (!this.map) {
-          // Inicializar el mapa solo si no existe
-          this.map = L.map(this.el.nativeElement.querySelector('#map')).setView([20, 0], 2);
+          this.map = L.map(this.el.nativeElement.querySelector('#map'),{
+            center: [20, 0],
+            zoom: 2,
+            zoomControl: true,
+            scrollWheelZoom: true,
+            attributionControl: true,
+          }).setView([20, 0], 2);
 
           // Cargar los tiles de OpenStreetMap
           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
           }).addTo(this.map);
 
-          // Cargar el archivo GeoJSON
           this.http.get<any>('/assets/countries.geojson').subscribe((geojsonData) => {
             if (this.geoJsonLayer) {
               this.map.removeLayer(this.geoJsonLayer);
             }
 
-            // Agregar los datos del GeoJSON con el estilo según los países seleccionados
             this.geoJsonLayer = L.geoJSON(geojsonData, {
               style: (feature) => {
                 const countryName = feature?.properties?.ADMIN;
@@ -73,7 +85,6 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Limpiamos el mapa y las capas cuando el componente es destruido
     if (this.map) {
       this.map.remove();
       this.map = null!;

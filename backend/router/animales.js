@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const {crearAnimal,obtenerHabitats } = require('../controllers/animales');
+const {crearAnimal,obtenerHabitats,getSonidoAnimal } = require('../controllers/animales');
 const router = Router();
 
 
@@ -8,6 +8,7 @@ router.post('/',[
 
 ],crearAnimal);
 
+router.get('/sonido/:id', getSonidoAnimal);
 
 router.get('/:idAnimal',[
 

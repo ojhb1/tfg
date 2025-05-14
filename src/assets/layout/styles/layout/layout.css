@@ -353,6 +353,7 @@ a {
 .layout-main-container {
   display: flex;
   flex-direction: column;
+  border:2px solid black;
   min-height: 100vh;
   justify-content: space-between;
   padding: 7rem 2rem 2rem 4rem;
@@ -360,6 +361,7 @@ a {
 }
 
 .layout-main {
+
   flex: 1 1 auto;
 }
 

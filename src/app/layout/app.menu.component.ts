@@ -15,11 +15,12 @@ import { AppMenuitemComponent } from './app.menuitem.component';
     templateUrl: './app.menu.component.html'
 })
 export class AppMenuComponent implements OnInit {
-
     model: any[] = [];
-
+    mostrarMenu: boolean = true;
     constructor(public layoutService: LayoutService) { }
-
+    toggleMenu() {
+        this.mostrarMenu = !this.mostrarMenu;
+    }
     ngOnInit() {
         this.model = [
             {
@@ -31,30 +32,23 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Colección',
                 items: [
-                    { label: 'Animales', icon: 'pi pi-fw pi-id-card',
-                        items: [
-                            {
-                                label: 'Mamíferos', 
-                                icon: 'pi pi-fw pi-bookmark',
-                                routerLink: ['/mamiferos']
-                            },
-                            {
-                                label: 'Aves', icon: 'pi pi-fw pi-bookmark',routerLink: ['/aves']
-                            },
-                            {
-                                label: 'Peces', icon: 'pi pi-fw pi-bookmark',routerLink: ['/peces']
-                            },
-                            {
-                                label: 'Anfibios', icon: 'pi pi-fw pi-bookmark',routerLink: ['/anfibios']
-                            },
-                            {
-                                label: 'Reptiles', icon: 'pi pi-fw pi-bookmark',routerLink: ['/reptiles']
-                            },
-                            {
-                                label: 'Insectos', icon: 'pi pi-fw pi-bookmark',routerLink: ['/insectos']
-                            },
-                        ]
-                    },
+           
+                            { label: 'Mamíferos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/mamiferos'] },
+                            { label: 'Aves', icon: 'pi pi-fw pi-bookmark', routerLink: ['/aves'] },
+                            { label: 'Peces', icon: 'pi pi-fw pi-bookmark', routerLink: ['/peces'] },
+                            { label: 'Anfibios', icon: 'pi pi-fw pi-bookmark', routerLink: ['/anfibios'] },
+                            { label: 'Reptiles', icon: 'pi pi-fw pi-bookmark', routerLink: ['/reptiles'] },
+
+                            // Invertebrados
+                            { label: 'Insectos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/insectos'] },
+                            { label: 'Arácnidos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/aracnidos'] },
+                            { label: 'Moluscos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/moluscos'] },
+                            { label: 'Crustáceos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/crustaceos'] },
+                            { label: 'Equinodermos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/equinodermos'] },
+                            { label: 'Anélidos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/anelidos'] },
+                            { label: 'Cnidarios', icon: 'pi pi-fw pi-bookmark', routerLink: ['/cnidarios'] },
+                            { label: 'Poríferos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/poriferos'] },
+
                    /* { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
                     { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel'] },
                     { label: 'Invalid State', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/uikit/invalidstate'] },

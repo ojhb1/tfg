@@ -8,6 +8,44 @@ $gutter: 1rem; //for primeflex grid system
 
 
 
+.toggle-sidebar-button {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1000;
+    background-color: #212121;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 0.75rem 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    transition: background-color 0.3s ease;
+  }
+  
+  .toggle-sidebar-button:hover {
+    background-color: #333333;
+  }
+  .layout-main-container {
+    //border: 2px dashed red;
+    padding-top: 2rem;
+  }
+  
+  .layout-main {
+    //border: 2px dashed green;
+    margin-top: 0;
+    padding-top: 0;
+    
+  }
+  .layout-sidebar {
+    top: 2rem; /* o 0 si quieres alinearlo arriba del todo */
+  }
+  .layout-sidebar {
+  overflow-y: scroll;
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE y Edge */
+}
 
-
-
+.layout-sidebar::-webkit-scrollbar {
+  display: none;              /* Chrome, Safari y Edge (Webkit) */
+}

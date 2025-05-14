@@ -11,8 +11,11 @@ export class AnimalesService {
   getTipoAnimal(tipoAnimal:any){
     return this.http.get(this.apiUrl+'/'+tipoAnimal);
   }
-
+  obtemerSonido(id:any){
+    return this.http.get(this.apiUrl2+'/sonido/'+id,{ responseType: 'blob' });
+  }
   getHabitats(animal:any){
+    console.log(animal);
     return this.http.get(this.apiUrl2+'/'+animal);
   }
 }

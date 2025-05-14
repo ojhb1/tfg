@@ -1,14 +1,324 @@
 <!-- babylon-viewer.component.html -->
 <div class="babylon-container">
+  <div
+    class="babylon-tooltip"
+    [ngStyle]="{ 
+      left: tooltipX + 'px', 
+      top: tooltipY + 'px',
+      opacity: showTooltip ? '1' : '0'
+    }"
+  >
+    {{ tooltipText }}
+  </div>
+  <!--
+  <p-overlayPanel #opAjustes>  
+    <ul style="list-style: none; padding: 0; margin: 0; width: 200px;">
+      
+      <li (click)="hacerAlgo()" style="cursor: pointer; padding: 5px;justify-content: center;text-align: center;">
+        <div style="text-align: center;">
+          <h2>HUD</h2>
+          <hr style="margin: 0.5rem 0;">
+        </div>
+        <p-inputSwitch
+          (onChange)="ocultarHudd()"
+          [pTooltip]="ocultarHud ? 'Mostrar HUD' : 'Ocultar HUD'"
+          tooltipPosition="top"
+          [style]="{ 'margin-top': '10px' }">
+        </p-inputSwitch>
+
+      </li>
+    </ul>
+  </p-overlayPanel>
+  
+  <i 
+    class="pi pi-cog rueda-ajustes"
+    style="cursor: pointer; font-size: 2rem;"
+    (click)="opAjustes.toggle($event)">
+  </i>-->
+  <p-dialog
+  [(visible)]="mostrarMapa"
+  [modal]="true"
+  [closable]="true"
+  [dismissableMask]="true"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  (onShow)="onMapaDialogShow()"
+  [style]="{ width: '50vw', top: '5vh', position: 'absolute' }"
+  [contentStyle]="{ 'max-height': '70vh', overflow: 'auto' }"
+  (onHide)="mostrarMapa = false"
+>
+  <!-- **Modelo 3D flotando arriba** -->
+  <ng-container *ngIf="animacionActivada?.length > 0">
+    <app-modelo-3d
+      [modeloUrl]="rutaCompletaModelo + (animacionActivada[0]?.archivo || '')"
+      style="
+        display: block;
+        width: 100px;
+        height: 100px;
+        cursor: pointer;
+        position: absolute;
+        z-index: 999;
+        top: 10px;
+        left: 10px;
+      "
+    >
+    </app-modelo-3d>
+  </ng-container>
+  
+    <!-- **Contenido normal** -->
+    <div class="text-center"> <!-- Deja espacio para que el modelo no tape -->
+      <div style="display: flex; justify-content: center; width: 100%;">
+        <h1>Disposición Geográfica</h1>
+      </div>
+      <hr style="border: 1px solid white;">
+      <app-mapa [animalCountries]="animalCountries"></app-mapa>
+    </div>
+  </p-dialog>
+ 
+
     <!-- Canvas donde se renderiza Babylon -->
     <canvas #canvas></canvas>
-  
+    <div *ngIf="!ocultarHud">
+      <i *ngIf="cambiarCuadro" (click)="cerrarCuadro()" style="font-size: 2rem;position: absolute;bottom: 40px;right: 20px;cursor: pointer;" class="pi pi-angle-up" ></i>
+      <div class="cuadroInfo"  [ngClass]="{ 'oculto': cambiarCuadro }">                    
+                      <div style="display: block; width: 100%; height: 100%;"> 
+                          <div class="card" style="width: 100%;    box-shadow: 1px 3px 3px black;background-color: #1f2937;">
+                              <div style="display: flex;height: 100%;width: fit-content;">
+                                  <h3>Informacion</h3>
+                                  <i 
+                                  class="pi pi-angle-down" 
+                                  (click)="cerrarCuadro()" 
+                                  style="font-size: 2rem; width: fit-content; height: fit-content; cursor: pointer;margin-left: 100%;">
+                                  </i>
+                              </div>
+                              Altura: {{ animal?.alturaMedia ? animal?.alturaMedia + ' m' : '' }}
+                              <br>
+                              Peso: {{ animal?.pesoMedio }} kg
+                              <br>
+                              Velocidad Máxima: {{ animal?.velocidadMax }}
+                              <br>
+                              Horas de Sueño: {{ animal?.horasSuenyo }}
+                              <br>
+                              Población: {{ animal?.poblacion }}
+                              <br>
+                              Esperanza de Vida: {{ animal?.esperanzaVida }}
+                          </div>
+                      
+                      </div>
+      </div>
+    </div>
+    <div style="display: flex;position: relative;bottom: 50px;">
+
+      <button
+        *ngIf="!ocultarHud"
+        class="p-button p-button-text p-button-sm"
+        (click)="mostrarMapa = true"
+        [pTooltip]="'Mostrar disposición geográfica'"
+      >
+        <i class="pi pi-map" style="font-size: 1.5rem;"></i>
+      </button>
+    
+      <button
+        *ngIf="!ocultarHud"
+        class="p-button p-button-text p-button-sm"
+        (click)="alternarEtiquetas()"
+        [pTooltip]="mostrarEtiquetas ? 'Ocultar Etiquetas' : 'Mostrar Etiquetas'"
+      >
+        <i class="pi"  style="font-size: 1.5rem;" [ngClass]="'pi pi-tags'" ></i>
+      </button>
+    </div>
+    
     <!-- Contenedor de botones superpuestos -->
+    <div *ngIf="!ocultarHud" class="overlay-buttons">
+      <div class="tarjeta-opcion"   [pTooltip]="'Animaciones'" (click)="op.toggle($event)">🎞️</div>
+      <div class="tarjeta-opcion"   [pTooltip]="'Sonidos'" (click)="sonidos.toggle($event)" >🔊</div>
+      <!--
+      <button
+        pButton
+        type="button"
+        icon="pi pi-chevron-down"
+        label="Animaciones"
+        class="p-button-outlined p-button-warning"
+        (click)="op.toggle($event)">
+      </button>
+      <button type="button"
+            pButton
+            icon="pi pi-chevron-down"
+            label="Sonidos"
+            (click)="sonidos.toggle($event)"
+            style="width:auto; background-color: transparent; color: white; border: 1px solid white;">
+      </button>-->
+      <p-overlayPanel #op>
+        <div style="display: flex;  align-items: center;width: 350px;height: 310px;padding-bottom: 5px;">
+          <p-carousel
+            (mousedown)="mouseDownX = $event.clientX"
+            (mouseup)="mouseUpX = $event.clientX"
+            [value]="animacionActivada"
+            [numVisible]="1"
+            class="carousel-animaciones"
+            [numScroll]="1"
+            [circular]="false"
+            [ngStyle]="{ padding: '0', margin: '0', width: '100%', height: '100%' }"
+            (onPage)="onSlideChange($event)"
+            [responsiveOptions]="carouselResponsiveOptions">
+
+            <ng-template pTemplate="item" let-anim >
+              <app-mini-preview
+                (mousedown)="onMouseDown($event)"
+                (mouseup)="onMouseUp($event)"
+                (mousemove)="onMouseMove($event)"
+                [tamanyoAnimal]="camaraTamanyo"
+                [modeloUrl]="anim.archivo"
+                [urlGlobal]="rutaCompletaModelo"
+                [animacionNombre]="anim.nombre"
+                (animacionSeleccionada)="aplicarAnimacion($event)"
+                [ngClass]="{ 'seleccionada': selectedModelo === anim.archivo }"
+                style="width: 100%; height: 100%;margin: 0; padding: 0;cursor: pointer;">
+              </app-mini-preview>
+            </ng-template>
+          </p-carousel>
+          
+          <!--
+        <img
+          *ngIf="rutaCompletaModelo"
+          class="iconoAnimacion"
+          [ngClass]="imagenSeleccionada === 'quieto.png' ? 'seleccionada' : ''"
+          [src]="rutaCompletaModelo + 'quieto.png'"
+          (click)="inmovil(); seleccionarImagen('quieto.png')"
+        />
+        
+        <img
+          *ngIf="rutaCompletaModelo"
+          class="iconoAnimacion"
+          [ngClass]="imagenSeleccionada === 'saltar.png' ? 'seleccionada' : ''"
+          [src]="rutaCompletaModelo + 'saltar.png'"
+          (click)="personalizada(); seleccionarImagen('saltar.png')"
+        />
+        
+          <button  pButton pRipple type="button" style="height: 5px;" label="Sin Animación" class="p-button-outlined p-button-success" (click)="sinAnimar()"></button>
+          <button  pButton pRipple type="button" style="height: 5px;" label="Inmovil" class="p-button-outlined p-button-success"(click)="inmovil()"></button>
+          <button  pButton pRipple type="button" style="height: 5px;" label="Personalizada" class="p-button-outlined p-button-success"(click)="personalizada()"></button>
+          -->
+        </div>
+      </p-overlayPanel>
+    </div>
+    <!--
     <div class="overlay-buttons">
       <button  pButton pRipple type="button" style="height: 5px;" label="Sin Animación" class="p-button-outlined p-button-success" (click)="sinAnimar()"></button>
       <button  pButton pRipple type="button" style="height: 5px;" label="Inmovil" class="p-button-outlined p-button-success"(click)="inmovil()"></button>
       <button  pButton pRipple type="button" style="height: 5px;" label="Personalizada" class="p-button-outlined p-button-success"(click)="personalizada()"></button>
     </div>
-</div>
+    -->
+
   
 
+<p-overlayPanel #sonidos>
+  <div *ngFor="let sonido of sonidoAnimal; let i = index" style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <span>{{ sonido.nombre }}</span>
+        
+        <i 
+          *ngIf="!sonido.reproduciendo"
+          class="pi pi-play"
+          (click)="reproducirSonido(i)"
+          style="font-size: 1.8rem; cursor: pointer;">
+        </i>
+    
+        <i 
+          *ngIf="sonido.reproduciendo"
+          class="pi pi-pause"
+          (click)="pausarSonido(i)"
+          style="font-size: 1.8rem; cursor: pointer;">
+        </i>
+    
+        <span>{{ obtenerTiempoActual(i) }}</span>
+      </div>
+    
+      <div style="height: 4px; background: #ccc; width: 100%; position: relative;">
+        <div 
+          [style.width.%]="obtenerProgreso(i)"
+          style="height: 100%; background-color: #4caf50;">
+        </div>
+      </div>
+  </div>
+</p-overlayPanel>
+
+
+<p-dialog *ngIf="displayHistory" header="Historia"
+          [(visible)]="displayHistory"
+          [modal]="true"
+          [draggable]="false"
+          [dismissableMask]="true"
+          [closable]="false"
+          [style]="{ width: '50vw', top: '5vh', position: 'absolute' }">
+
+          <ng-container *ngIf="historySlides?.length">
+            <ng-template pTemplate="footer">
+              <span>{{ currentSlide + 1 }} / {{ historySlides.length }}</span>
+              <button pButton   icon="pi pi-times" 
+                      class="custom-close-button"
+                      (click)="displayHistory = false">
+              </button>
+            </ng-template>
+          </ng-container>
+
+  <div class="slide-container" *ngIf="historySlides?.length">
+    <!-- Botón izquierdo -->
+    <button class="nav-button left"
+            pButton
+            icon="pi pi-angle-left"
+            (click)="prevSlide()"
+            [disabled]="isFirstSlide">
+    </button>
+
+    <!-- Contenido de la diapositiva -->
+    <div [@slideAnimation]="currentSlide" class="slide">
+      <h3 *ngIf="historySlides[currentSlide]?.title !== '—'">
+        {{ historySlides[currentSlide].title }}
+      </h3>
+      <hr *ngIf="historySlides[currentSlide]?.title === '—'">
+
+      <p>{{ historySlides[currentSlide]?.text }}</p>
+      
+      <p-image *ngIf="historySlides[currentSlide]?.imagenes"
+        width="300" height="200"  alt="Imagen descriptiva" 
+        [src]="'assets/animales/' + animal.nombre.toLowerCase() + '/historia/' + historySlides[currentSlide]?.imagenes">
+      </p-image>
+    </div>
+
+    <!-- Botón derecho -->
+    <button class="nav-button right"
+            pButton
+            icon="pi pi-angle-right"
+            (click)="nextSlide()"
+            [disabled]="isLastSlide">
+    </button>
+  </div>
+
+
+</p-dialog>
+<p-dialog [(visible)]="alimentacionMostrar" draggable="false" header="Alimentación" >
+  <div style="width: 700px; height: auto; padding: 20px; cursor: pointer;overflow: hidden;">
+    
+
+
+    <p-carousel [value]="animalIconos" [numVisible]="1" [numScroll]="1" [circular]="false"
+                (onPage)="onSlideChange($event)" [responsiveOptions]="carouselResponsiveOptions"
+                styleClass="custom-carousel">
+      
+      <ng-template let-item pTemplate="item">
+        <div style="display: flex; justify-content: center; align-items: center;width: 100%;overflow: hidden;">
+          <app-babylon-iconos [nombre]="item"></app-babylon-iconos>
+        </div>
+      </ng-template>
+
+    </p-carousel>
+
+    <div style="margin-top: 1rem; text-align: center; padding: 0 1rem; max-width: 700px; margin-inline: auto;overflow: hidden;">
+      <p style="color: #ccc; font-size: 1rem; line-height: 1.6;">
+        {{ animalIconos[activeSlideIndex]?.descripcion.descripcion }}
+      </p>
+    </div>
+
+  </div>
+</p-dialog>

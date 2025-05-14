@@ -1,0 +1,53 @@
+html, body {
+  height: 100%;
+}
+.inicio-container {
+  padding: 2rem;
+  color: #ffffff;
+  background-color: #1f2937;
+  height: 100%;
+  text-align: center;
+  border-radius: 12px; 
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitulo {
+    font-size: 1.2rem;
+    color: #60a5fa;
+    margin-bottom: 2rem;
+  }
+
+  .contenido {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+
+    h2 {
+      margin-top: 2rem;
+      color: #60a5fa;
+    }
+
+    ul {
+      margin-top: 1rem;
+      padding-left: 1.5rem;
+
+      li {
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    .resaltado {
+      color: #60a5fa;
+      font-weight: bold;
+    }
+
+    .final {
+      margin-top: 2rem;
+      font-weight: bold;
+      text-align: center;
+    }
+  }
+}
